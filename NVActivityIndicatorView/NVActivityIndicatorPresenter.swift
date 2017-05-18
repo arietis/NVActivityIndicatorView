@@ -218,7 +218,9 @@ public final class NVActivityIndicatorPresenter {
             containerView.addConstraint(spacingConstraint)
         }())
 
-        guard let keyWindow = UIApplication.shared.keyWindow else { return }
+        let windows = UIApplication.shared.windows
+
+        guard let keyWindow = windows.filter({ $0.windowLevel == UIWindowLevelNormal }).first else { return }
 
         keyWindow.addSubview(containerView)
         state = .showed
@@ -247,7 +249,7 @@ public final class NVActivityIndicatorPresenter {
     }
 
     private func hide() {
-        for window in UIApplication.shared.windows {
+        for window in UIApplication.shared.windows where window.windowLevel == UIWindowLevelNormal {
             for item in window.subviews where item.restorationIdentifier == restorationIdentifier {
                 item.removeFromSuperview()
             }
